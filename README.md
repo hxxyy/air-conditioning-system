@@ -1,4 +1,4 @@
-# Air Conditioning System
+﻿# Air Conditioning System
 
 > Software Engineering Project
 
@@ -15,6 +15,6 @@
     
 ### 贡献名单
 * [hxxyy](https://github.com/hxxyy)
-* [Chi J.W.]()
+* [Chijingwen](https://github.com/Chijingwen)
 * [Wei Xiao](https://github.com/awybupt)
 
