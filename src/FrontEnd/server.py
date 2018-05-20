@@ -22,6 +22,7 @@ def conne(host="127.0.0.1",port=8086,maxlisten = 5):
                 break
 
 """
+
 def conne(host="127.0.0.1",port=8086,maxlisten = 5):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.bind((host, port))

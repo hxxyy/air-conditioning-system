@@ -129,6 +129,13 @@
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
+      <widget class="QLabel" name="label_11">
+       <property name="text">
+        <string>空调状态</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QLabel" name="label_5">
        <property name="text">
         <string>目标温度</string>
@@ -150,16 +157,16 @@
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="label_6">
+      <widget class="QLabel" name="label_7">
        <property name="text">
-        <string>最高温度</string>
+        <string>最低温度</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="label_7">
+      <widget class="QLabel" name="label_6">
        <property name="text">
-        <string>最低温度</string>
+        <string>最高温度</string>
        </property>
       </widget>
      </item>
@@ -175,6 +182,13 @@
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout_2">
+     <item>
+      <widget class="QLabel" name="workorsleep">
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+      </widget>
+     </item>
      <item>
       <widget class="QLabel" name="target_tem">
        <property name="text">
