@@ -1,6 +1,6 @@
 import socket
 import json
-def conne(host="127.0.0.1",port=9008,maxlisten = 5):
+def conne(host="192.168.43.110",port=9008,maxlisten = 5):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.bind((host, port))
         s.listen(maxlisten)

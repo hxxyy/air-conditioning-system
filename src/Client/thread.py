@@ -2,7 +2,7 @@
 import threading
 import mainwindow
 
-t1=mainwindow.client("2015211302")
+t1=mainwindow.client("2015211301")
 class myThread (threading.Thread):
     def __init__(self, counter):
         threading.Thread.__init__(self)
