@@ -3,7 +3,7 @@ from json import loads,dumps
 from time import sleep
 
 class client:
-    def __init__(self,rid='1',realtemp=30.0,ulimit=32,llimit=16,nowmoney=0.0,adress='10.128.192.1',tport=9999):
+    def __init__(self,rid='1',realtemp=30.0,ulimit=32,llimit=16,nowmoney=0.0,adress='127.0.0.1',tport=9008):
         self.clientid=''
         self.roomid=rid
         self.realtimetemperature=realtemp

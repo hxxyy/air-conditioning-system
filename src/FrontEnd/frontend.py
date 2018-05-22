@@ -3,7 +3,7 @@ import time
 import json
 class front:
 
-    def __init__(self,clnumber=0,maxnumber=8,adress='127.0.0.1',tport=8086):
+    def __init__(self,clnumber=0,maxnumber=8,adress='192.168.43.58',tport=8086):
         print("欢迎来到快捷酒店，这里很穷")
         self.clientnumber=clnumber
         self.maxnumber=maxnumber
