@@ -41,8 +41,3 @@
     * MySQL
 * Socket
 * json
-    
-### 贡献名单
-* [hxxyy](https://github.com/hxxyy)
-* [Chijingwen](https://github.com/Chijingwen)
-* [Wei Xiao](https://github.com/awybupt)
