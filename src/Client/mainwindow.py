@@ -1,6 +1,9 @@
 import socket
 from json import loads,dumps
 from time import sleep
+import sys
+import client_ui
+from PyQt5.QtWidgets import QApplication, QMainWindow
 
 class client:
     def __init__(self,rid='1',realtemp=30.0,ulimit=32,llimit=16,nowmoney=0.0,adress='127.0.0.1',tport=9008):
@@ -8,7 +11,7 @@ class client:
         self.roomid=rid
         self.realtimetemperature=realtemp
         self.targettemperature=26.0
-        self.windVelocity=0#风速1，2
+        self.windVelocity=0 #风速1，2
         self.uplimit=ulimit
         self.lowlimit = llimit
         self.money=nowmoney
@@ -90,8 +93,17 @@ class client:
                 print("valid input")
 
 
-if __name__=="__main__":
-    Client1=client("2015211301")
+if __name__ == '__main__':
+    Client1 = client("2015211301")
+    app = QApplication(sys.argv)
+    MainWindow = QMainWindow()
+    ui = client_ui.Ui_MainWindow()
+    ui.setupUi(MainWindow,Client1)
+    MainWindow.show()
+    print(Client1.roomid)
+
+    sys.exit(app.exec_())
+
 
 
 
