@@ -100,8 +100,6 @@ if __name__ == '__main__':
     ui = client_ui.Ui_MainWindow()
     ui.setupUi(MainWindow,Client1)
     MainWindow.show()
-    print(Client1.roomid)
-
     sys.exit(app.exec_())
 
 

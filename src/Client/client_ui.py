@@ -7,9 +7,12 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import QCoreApplication
+from PyQt5.QtWidgets import QWidget, QMessageBox, QApplication,QLabel
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow,client):
+        self.client=client
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(800, 600)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
@@ -133,13 +136,16 @@ class Ui_MainWindow(object):
         self.pushButton1.setText(_translate("MainWindow", "1-微风"))
         self.pushButton2.setText(_translate("MainWindow", "2-中风"))
         self.pushButtonswitch.setText(_translate("MainWindow", "开关"))
-        #self.pushButtonswitch.click(self.opendown(client))
+
+        self.pushButtonswitch.clicked.connect(self.opendown)
+        self.pushButtonup.clicked.connect(self.up)
+
         self.label_5.setText(_translate("MainWindow", "目标温度"))
         self.label_4.setText(_translate("MainWindow", "当前温度"))
         self.label_3.setText(_translate("MainWindow", "风速"))
         self.label_6.setText(_translate("MainWindow", "最高温度"))
         self.label_7.setText(_translate("MainWindow", "最低温度"))
-        self.target_tem.setText(_translate("MainWindow", "TextLabel"))
+        self.target_tem.setText(_translate("MainWindow", str(self.client.targettemperature)))
         self.now_tem.setText(_translate("MainWindow", "TextLabel"))
         self.wind.setText(_translate("MainWindow", "TextLabel"))
         self.high_tem.setText(_translate("MainWindow", str(client.uplimit)))
@@ -147,9 +153,13 @@ class Ui_MainWindow(object):
         self.label_9.setText(_translate("MainWindow", "房间号"))
         self.label_10.setText(_translate("MainWindow", "耗能"))
         self.label_8.setText(_translate("MainWindow", "费用"))
-        self.label_12.setText(_translate("MainWindow", client.roomid))
+        self.label_12.setText(_translate("MainWindow", self.client.roomid))
         self.energy.setText(_translate("MainWindow", "TextLabel"))
         self.fee.setText(_translate("MainWindow", "TextLabel"))
 
-    def opendown(self,client):
-        client.roomid="111"
+    def opendown(self):
+        self.client.targettemperature="111"
+
+
+    def up(self):
+        self.target_tem.setText(str(self.client.targettemperature))
