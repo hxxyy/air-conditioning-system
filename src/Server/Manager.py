@@ -1,6 +1,5 @@
+from Airserver import MainServer
 from threading import Thread
-from mainwindow import Client
-
 class UseThread(Thread):
     def __init__(self, counter):
         Thread.__init__(self)
@@ -8,15 +7,16 @@ class UseThread(Thread):
 
     def run(self):
         if self.counter == 1:
-            testClient.termtask()
+            testServer.ConnectClient()
         else:
-            testClient.edittask()
+            testServer.editTask()
 
 if __name__=='__main__':
-    testClient = Client()
+    dPort=input("请输入服务端口:")
+    maxsize = input("请输入最大服务数:")
+    testServer = MainServer(int(maxsize),int(dPort))
     thread1 = UseThread(1)
     thread2 = UseThread(2)
-    # 开启新线程
     thread1.start()
     thread2.start()
     thread1.join()
