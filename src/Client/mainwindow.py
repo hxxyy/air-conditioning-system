@@ -1,7 +1,11 @@
 from socket import AF_INET, SOCK_STREAM, SOL_SOCKET, SO_KEEPALIVE, socket
 from json import loads, dumps
 from time import sleep
+import sys
+import client_ui
+from PyQt5.QtWidgets import QApplication, QMainWindow
 
+<<<<<<< HEAD
 class Client:
     def __init__(self, rid='1', realtemp=30.0, ulimit=32, llimit=16, swi=0, nowmoney=0.0, adress='10.128.223.55',
                  tport=8080, outtemp=30.0):
@@ -11,6 +15,16 @@ class Client:
         self.outtemp = outtemp
         self.windVelocity = 0  # 风速1，2
         self.uplimit = ulimit
+=======
+class client:
+    def __init__(self,rid='1',realtemp=30.0,ulimit=32,llimit=16,nowmoney=0.0,adress='127.0.0.1',tport=9008):
+        self.clientid=''
+        self.roomid=rid
+        self.realtimetemperature=realtemp
+        self.targettemperature=26.0
+        self.windVelocity=0 #风速1，2
+        self.uplimit=ulimit
+>>>>>>> f637170b8a1050ab1798e0aba27ef637ed0babfa
         self.lowlimit = llimit
         self.money = nowmoney
         self.adress = adress
@@ -98,5 +112,29 @@ class Client:
             else:
                 print("valid input")
 
+<<<<<<< HEAD
 if __name__ == "__main__":
     Client1 = Client()
+=======
+
+if __name__ == '__main__':
+    Client1 = client("2015211301")
+    app = QApplication(sys.argv)
+    MainWindow = QMainWindow()
+    ui = client_ui.Ui_MainWindow()
+    ui.setupUi(MainWindow,Client1)
+    MainWindow.show()
+    sys.exit(app.exec_())
+
+
+
+
+
+
+
+
+
+
+
+
+>>>>>>> f637170b8a1050ab1798e0aba27ef637ed0babfa
