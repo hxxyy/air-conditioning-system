@@ -9,9 +9,7 @@
    <a><img src="https://img.shields.io/badge/Command-passing-brightgreen.svg"></a>  
 </p>
 
-> Software Engineering Project
 
-> Base [MIT protocol](https://github.com/hxxyy/air-conditioning-system/blob/master/LICENSE)
 
 ### 开发环境
 * 语言: Python 3.6/Qt
