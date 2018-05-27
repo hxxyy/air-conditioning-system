@@ -1,5 +1,5 @@
 from threading import Thread
-from client.mainwindow import Client
+from mainwindow import Client
 
 class UseThread(Thread):
     def __init__(self, counter):

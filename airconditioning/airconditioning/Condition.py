@@ -1,5 +1,6 @@
-from Airserver import MainServer
 from threading import Thread
+from airconditioning.mainwindow import Client
+from airconditioning.view import Client1
 
 class UseThread(Thread):
     def __init__(self, counter):
@@ -8,16 +9,16 @@ class UseThread(Thread):
 
     def run(self):
         if self.counter == 1:
-            testServer.ConnectClient()
+            Client1.termtask()
         else:
-            testServer.editTask()
+            Client1.edittask()
 
-if __name__=='__main__':
-    dPort=input("请输入服务端口:")
-    maxsize = input("请输入最大服务数:")
-    testServer = MainServer(int(maxsize),int(dPort))
+if __name__ == "__main__":
+    ip=input("ip address")
+    Client1 = Client(adress=ip)
     thread1 = UseThread(1)
     thread2 = UseThread(2)
+    # 开启新线程
     thread1.start()
     thread2.start()
     thread1.join()

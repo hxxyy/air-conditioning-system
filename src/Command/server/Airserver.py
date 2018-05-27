@@ -1,8 +1,7 @@
 from socket import AF_INET, SOCK_STREAM, gethostbyname, gethostname, socket, SOL_SOCKET, SO_KEEPALIVE
 from json import loads, dumps
 from pymysql import connect
-from server.AirTime import NowTime, TimeDiff, dayegotime
-
+from AirTime import NowTime, TimeDiff, dayegotime
 
 class MainServer:
     def __init__(self, serversize=8, bPort=8080):
@@ -88,8 +87,8 @@ class MainServer:
         db = connect(
             host="localhost",
             port=3306,
-            user="wx",
-            passwd="password",
+            user="root",
+            passwd="1997424",
             db="mytest")
         cursor = db.cursor()
         sql = massage
