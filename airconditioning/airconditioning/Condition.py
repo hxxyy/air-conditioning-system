@@ -1,6 +1,6 @@
 from threading import Thread
 from airconditioning.mainwindow import Client
-from airconditioning.view import Client1
+from manage import Client1
 
 class UseThread(Thread):
     def __init__(self, counter):
@@ -10,7 +10,7 @@ class UseThread(Thread):
     def run(self):
         if self.counter == 1:
             Client1.termtask()
-        else:
+        else :
             Client1.edittask()
 
 if __name__ == "__main__":
