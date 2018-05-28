@@ -5,8 +5,8 @@ from time import sleep
 import os,sys
 
 class Client:
-    def __init__(self, rid='1', realtemp=30.0, ulimit=32, llimit=16, swi=0, nowmoney=0.0, adress='10.28.174.21',
-                 tport=9999, outtemp=30.0):
+    def __init__(self, rid='1',adress='1', tport=1,realtemp=30.0, ulimit=32, llimit=16, swi=0, nowmoney=0.0,
+                  outtemp=30.0):
         self.roomid = rid
         self.realtimetemperature = realtemp
         self.targettemperature = 26.0

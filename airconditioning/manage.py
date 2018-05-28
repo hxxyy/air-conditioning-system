@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 import os
 import sys
-from airconditioning.Condition import *
 
-
-Client1 = Client()
+flag = 0
+#Client1 = Client()
 
 
 if __name__ == "__main__":
+        '''
         thread1 = UseThread(1)
         thread2 = UseThread(2)
         # 开启新线程
@@ -33,4 +33,3 @@ if __name__ == "__main__":
                 )
             raise
         execute_from_command_line(sys.argv)
-'''

@@ -1,8 +1,23 @@
 from django.http import HttpResponse
 from django.shortcuts import render,HttpResponseRedirect
 from airconditioning.mainwindow import *
-from airconditioning.Condition import *
-import manage
+from threading import Thread
+from airconditioning.mainwindow import Client
+
+global Client1
+
+class UseThread(Thread):
+    global Client1
+    def __init__(self, counter):
+        Thread.__init__(self)
+        self.counter = counter
+
+    def run(self):
+        if self.counter == 1:
+            Client1.termtask()
+        else :
+            Client1.edittask()
+
 
 def login(request):
     context={}
@@ -10,16 +25,17 @@ def login(request):
 
 
 def loginsubmit(request):
-    context = {}
     request.encoding = 'utf-8'
-    context['roomid']=request.GET['id']
-    Client1.roomid=request.GET['id']
-    Client1.adress= request.GET['ip']
-    context['address'] = request.GET['ip']
-    return render(request,'client.html',context)
+    global Client1
+    Client1=Client(rid=request.GET['id'],adress=request.GET['ip'],tport=int(request.GET['port']))
+    thread1 = UseThread(1)
+    thread1.start()
+    thread1.join()
+    return render(request,'client.html')
 
 
 def ini():
+    global Client1
     context = {}
     context['roomid'] = Client1.roomid
     context['target'] = Client1.targettemperature
@@ -38,31 +54,37 @@ def initial(request):
 
 # 开关
 def onoff(request):
+    global Client1
     Client1.changeswitch()
     context = ini()
     return HttpResponseRedirect("/client")
 
 #风速
 def wind0(request):
+    global Client1
     Client1.changemodle(0)
     return HttpResponseRedirect("/client")
 
 def wind1(request):
+    global Client1
     Client1.changemodle(1)
     return HttpResponseRedirect("/client")
 
 def wind2(request):
+    global Client1
     Client1.changemodle(2)
     return HttpResponseRedirect("/client")
 
 #调温
 def up(request):
+    global Client1
     Client1.targettemperature +=1
     if Client1.targettemperature>Client1.uplimit:
         Client1.targettemperature -= 1
     return HttpResponseRedirect("/client")
 
 def down(request):
+    global Client1
     Client1.targettemperature -=1
     if Client1.targettemperature<Client1.lowlimit:
         Client1.targettemperature += 1
