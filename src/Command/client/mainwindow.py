@@ -3,7 +3,7 @@ from json import loads, dumps
 from time import sleep
 
 class Client:
-    def __init__(self, rid='1', realtemp=30.0, ulimit=32, llimit=16, swi=0, nowmoney=0.0, adress='13',
+    def __init__(self, rid='1', realtemp=30.0, ulimit=32, llimit=16, swi=0, nowmoney=0.0, adress='172.20.10.8',
                  tport=8080, outtemp=30.0):
         self.roomid = rid
         self.realtimetemperature = realtemp
@@ -33,6 +33,7 @@ class Client:
             return False
         else:
             self.targettemperature = float(tar)
+            self.requestreport()
             return True
 
     def changemodle(self, model):
@@ -57,7 +58,7 @@ class Client:
         self.money = float(ans['cost'])
 
     def requestreport(self):
-        por = {'type': 0, 'room': self.roomid, 'switch': self.switch, 'temperature': self.realtimetemperature,
+        por = {'type': 0, 'room': self.roomid, 'switch': self.switch, 'temperature': self.targettemperature,
                'wind': self.windVelocity}
         json_str = dumps(por)
         self.sendtcp(json_str)
@@ -67,6 +68,7 @@ class Client:
             self.switch = 0
         else:
             self.switch = 1
+        self.requestreport()
 
     def environmentchange(self):
         if self.switch == 0:
@@ -75,6 +77,7 @@ class Client:
             self.realtimetemperature += round(0.1 * self.windVelocity, 2)
         else:
             self.realtimetemperature -= round(0.1 * self.windVelocity, 2)
+        
 
     def termtask(self):
         while True:

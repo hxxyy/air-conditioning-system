@@ -28,9 +28,10 @@ def loginsubmit(request):
     request.encoding = 'utf-8'
     global Client1
     Client1=Client(rid=request.GET['id'],adress=request.GET['ip'],tport=int(request.GET['port']))
+    Client1.requestreport()
     thread1 = UseThread(1)
     thread1.start()
-    thread1.join()
+    #thread1.join()
     return render(request,'client.html')
 
 
@@ -39,7 +40,7 @@ def ini():
     context = {}
     context['roomid'] = Client1.roomid
     context['target'] = Client1.targettemperature
-    context['realtem'] = format(Client1.realtimetemperature, '.2f')
+    context['realtem'] = float(format(Client1.realtimetemperature, '.2f'))
     context['wind'] = Client1.windVelocity
     context['mode'] = Client1.switch
     context['uplimit'] = Client1.uplimit
@@ -81,6 +82,7 @@ def up(request):
     Client1.targettemperature +=1
     if Client1.targettemperature>Client1.uplimit:
         Client1.targettemperature -= 1
+    Client1.changetarget(Client1.targettemperature)
     return HttpResponseRedirect("/client")
 
 def down(request):
@@ -88,4 +90,5 @@ def down(request):
     Client1.targettemperature -=1
     if Client1.targettemperature<Client1.lowlimit:
         Client1.targettemperature += 1
+    Client1.changetarget(Client1.targettemperature)
     return HttpResponseRedirect("/client")

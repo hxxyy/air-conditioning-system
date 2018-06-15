@@ -2,7 +2,7 @@ from socket import socket, AF_INET, SOCK_STREAM
 from json import loads
 
 class FrontEnd:
-    def __init__(self, maxnumber=2, tport=8086, adr='127.0.0.1'):
+    def __init__(self, maxnumber=2, tport=8086, adr='10.128.248.231'):
         self.__maxnumber = maxnumber
         self.__port = tport
         self.__adress = adr

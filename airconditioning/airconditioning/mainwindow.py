@@ -36,6 +36,7 @@ class Client:
             return False
         else:
             self.targettemperature = float(tar)
+            self.requestreport()
             return True
 
     def changemodle(self, model):
@@ -52,7 +53,7 @@ class Client:
             return accept_data
 
     def temperaturereport(self):
-        content = {'type': 1, 'temperature': '%.2f' % self.realtimetemperature, 'room': self.roomid}
+        content = {'type': 1, 'temperature': self.realtimetemperature, 'room': self.roomid}
         json_str = dumps(content)
         data = self.sendtcp(json_str)
         ans = loads(data)
@@ -60,7 +61,7 @@ class Client:
         self.money = float(ans['cost'])
 
     def requestreport(self):
-        por = {'type': 0, 'room': self.roomid, 'switch': self.switch, 'temperature': self.realtimetemperature,
+        por = {'type': 0, 'room': self.roomid, 'switch': self.switch, 'temperature': self.targettemperature,
                'wind': self.windVelocity}
         json_str = dumps(por)
         self.sendtcp(json_str)
@@ -70,9 +71,10 @@ class Client:
             self.switch = 0
         else:
             self.switch = 1
+        self.requestreport()
 
     def environmentchange(self):
-        if self.switch == 0:
+        if self.windVelocity == 0:
             self.realtimetemperature += (self.outtemp - self.realtimetemperature) * 0.01
         elif self.targettemperature > self.realtimetemperature:
             self.realtimetemperature += round(0.1 * self.windVelocity, 2)

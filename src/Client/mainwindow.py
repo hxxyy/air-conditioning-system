@@ -5,26 +5,25 @@ import sys
 import client_ui
 from PyQt5.QtWidgets import QApplication, QMainWindow
 
-<<<<<<< HEAD
+
 class Client:
     def __init__(self, rid='1', realtemp=30.0, ulimit=32, llimit=16, swi=0, nowmoney=0.0, adress='10.128.223.55',
-                 tport=8080, outtemp=30.0):
+                 tport=9999, outtemp=30.0):
         self.roomid = rid
         self.realtimetemperature = realtemp
         self.targettemperature = 26.0
         self.outtemp = outtemp
         self.windVelocity = 0  # 风速1，2
         self.uplimit = ulimit
-=======
+
 class client:
-    def __init__(self,rid='1',realtemp=30.0,ulimit=32,llimit=16,nowmoney=0.0,adress='127.0.0.1',tport=9008):
+    def __init__(self,rid='1',realtemp=30.0,ulimit=32,llimit=16,nowmoney=0.0,swi=0,adress='127.0.0.1',tport=9008):
         self.clientid=''
         self.roomid=rid
         self.realtimetemperature=realtemp
         self.targettemperature=26.0
         self.windVelocity=0 #风速1，2
         self.uplimit=ulimit
->>>>>>> f637170b8a1050ab1798e0aba27ef637ed0babfa
         self.lowlimit = llimit
         self.money = nowmoney
         self.adress = adress
@@ -112,10 +111,10 @@ class client:
             else:
                 print("valid input")
 
-<<<<<<< HEAD
+
 if __name__ == "__main__":
     Client1 = Client()
-=======
+
 
 if __name__ == '__main__':
     Client1 = client("2015211301")
@@ -130,11 +129,3 @@ if __name__ == '__main__':
 
 
 
-
-
-
-
-
-
-
->>>>>>> f637170b8a1050ab1798e0aba27ef637ed0babfa
