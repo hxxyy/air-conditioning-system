@@ -1,5 +1,5 @@
 from threading import Thread
-from client.mainwindow import Client
+from mainwindow import Client
 
 class UseThread(Thread):
     def __init__(self, counter):
@@ -13,11 +13,10 @@ class UseThread(Thread):
             testClient.edittask()
 
 if __name__=='__main__':
-    ip=input("ip address")
+    ip=input("ip address:\n")
     testClient = Client(adress=ip)
     thread1 = UseThread(1)
     thread2 = UseThread(2)
-    # 开启新线程
     thread1.start()
     thread2.start()
     thread1.join()
