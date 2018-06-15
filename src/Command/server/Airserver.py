@@ -1,14 +1,19 @@
 from socket import AF_INET, SOCK_STREAM, gethostbyname, gethostname, socket, SOL_SOCKET, SO_KEEPALIVE
 from json import loads, dumps
 from pymysql import connect
+<<<<<<< HEAD
+from .AirTime import NowTime, dayegotime
+
+=======
 from AirTime import NowTime, TimeDiff, dayegotime
+>>>>>>> 4b9c2be9ca5b42f4139e1c6c38d0f57a6642ff2b
 
 class MainServer:
     def __init__(self, serversize=8, bPort=8080):
         self.__clientList = {}
         self.__servelist = []  # 对这个队列中的每一个用户计费，根据他们的风速计费
         self.__clientNum = serversize
-        self.__ipAdress = gethostbyname(gethostname())
+        self.__ipAdress = '127.0.0.1'  # gethostbyname(gethostname())
         self.__BindPort = bPort
         self.__serverSize = 5
         self.__feeSpeed = 1
@@ -41,9 +46,9 @@ class MainServer:
                         'room'] not in self.__clientList:
                         error = 1
                     elif len(massage) == 3:
-                        self.__clientList[massage['room']]['realtimetemp'] = float(massage['temperature'])
+                        self.__clientList[massage['room']]['realtimetemp'] = round(float(massage['temperature']), 2)
                     elif len(massage) == 5:
-                        self.__clientList[massage['room']]['targettemp'] = float(massage['temperature'])
+                        self.__clientList[massage['room']]['targettemp'] = round(float(massage['temperature']), 2)
                         self.__clientList[massage['room']]['WindVelocity'] = int(massage['wind'])
                         self.__clientList[massage['room']]['switch'] = int(massage['switch'])
                     else:
@@ -58,7 +63,7 @@ class MainServer:
                         self.__Dispatch()
 
                         send_data = {'switch': int(self.__clientList[massage['room']]['switch']),
-                                     'temperature': float(self.__clientList[massage['room']]['realtimetemp']),
+                                     'temperature': round(float(self.__clientList[massage['room']]['realtimetemp']), 2),
                                      'wind': int(self.__clientList[massage['room']]['WindVelocity']),
                                      'cost': float(self.__clientList[massage['room']]['cost'])}
                         self.__clientList[massage['room']]['cost'] += self.__clientList[massage['room']][
@@ -67,7 +72,9 @@ class MainServer:
                         conn.sendall(bytes(sendd, encoding="utf8"))
                         self.__mysqlmanage(
                             'insert into AirLog values (' + str(NowTime()) + ',"' + massage['room'] + '",' + str(
-                                send_data['wind']) + ');', 1)
+                                send_data['wind']) + ',' + str(
+                                self.__clientList[massage['room']]['targettemp']) + ',' + str(
+                                send_data['switch']) + ',' + str(send_data['temperature']) + ');', 1)
                         break
 
     def __setserverSize(self, newsize):
@@ -77,11 +84,45 @@ class MainServer:
     def __setFeerate(self, newFee):
         self.__feeSpeed = newFee
 
-    def __printinfo(self, term=2):  # termExample:20
-        massage = 'select * from AirLog where time >' + dayegotime(NowTime(), term) + ';'
-        li = self.__mysqlmanage(massage, 2)
-        for line in li:
-            print(line)
+    def __printinfo(self, term=1):  # termExample:20
+        all = {}
+        for item in self.__clientList:
+            all[item] = {}  # 'dispatch':0
+        for item in all:
+            usenum = 0
+
+            fee = 0.0
+            changenum = 0
+            #dispatch = 0
+            massage = 'select count(*) from airlog where time >' + dayegotime(NowTime(),
+                                                                              term) + ' and room="' + item + '" and (targettem - realtemp) <0.3 and (targettem - realtemp)>-0.3;'
+            li = self.__mysqlmanage(massage, 2)
+            reach = li[0][0]
+            massage = 'select wind from airlog where time >' + dayegotime(NowTime(),
+                                                                              term) + ' and room="' + item + '" group by wind order by count(*) desc limit 1;'
+            li = self.__mysqlmanage(massage, 2)
+            dailywind = li[0][0]
+            massage = 'select targettem from airlog where time >' + dayegotime(NowTime(),
+                                                                              term) + ' and room="' + item + '" group by targettem order by count(*) desc limit 1;'
+            li = self.__mysqlmanage(massage, 2)
+            dailytemp = li[0][0]
+
+            massage = 'select * from AirLog where time >' + dayegotime(NowTime(), term) + ' and room="' + item + '";'
+            li = self.__mysqlmanage(massage, 2)
+            lilas = [1, 1, 1, 1, 0, 1]
+            for line in li:
+                if line[4] == 1 and lilas[4] == 0:
+                    usenum += 1
+                if line[2] != lilas[2]:
+                    changenum += 1
+                fee += self.__feeSpeed * line[2]
+                lilas = line
+            all[item] = {'usenum': usenum, 'dailytemp': dailytemp, 'dailywind': dailywind, 'reach': reach,
+                         'changenum': changenum,
+                         'fee': fee}
+
+        for item in all:
+            print(all[item])
 
     def __mysqlmanage(self, massage, choice):
         db = connect(
@@ -112,22 +153,22 @@ class MainServer:
     def __Dispatch(self):
         for key in self.__clientList:
             if self.__clientList[key]['room'] not in self.__servelist:
-                if self.__clientList[key]['switch'] == 1:
+                if self.__clientList[key]['switch'] == 1 and self.__clientList[key]['WindVelocity'] != 0:
                     dif = self.__clientList[key]['targettemp'] - self.__clientList[key]['realtimetemp']
                     if dif < 0.0:
                         dif = 0.0 - dif
-                    if dif > 0.7:
+                    if dif > 1.0:
                         if len(self.__servelist) < self.__serverSize:
                             self.__servelist.append(self.__clientList[key]['room'])
-                        elif self.__clientList[key]['windVelocity'] == 1:
+                        if self.__clientList[key]['WindVelocity'] == 2:
                             for serveritem in self.__servelist:
-                                if self.__clientList[serveritem]['windVelocity'] == 0:
+                                if self.__clientList[serveritem]['WindVelocity'] == 1:
                                     self.__servelist.remove(serveritem)
                                     self.__servelist.append(self.__clientList[key]['room'])
                                     break
-                        elif self.__clientList[key]['windVelocity'] == 2:
+                        elif self.__clientList[key]['WindVelocity'] == 3:
                             for serveritem in self.__servelist:
-                                if self.__clientList[serveritem]['windVelocity'] < 2:
+                                if self.__clientList[serveritem]['WindVelocity'] < 3:
                                     self.__servelist.remove(serveritem)
                                     self.__servelist.append(self.__clientList[key]['room'])
                                     break
@@ -155,7 +196,8 @@ class MainServer:
         while True:
             print('server size:', self.__serverSize)
             print('fee speed:', self.__feeSpeed)
-            choice = int(input("1:set serversize,2:set feespeed,3:exit air,4:print info"))
+            choice = input("1:set serversize,2:set feespeed,3:exit air,4:print info")
+            choice =int(choice)
             if choice == 1:
                 size = int(input("server size:"))
                 self.__setserverSize(size)
@@ -173,4 +215,3 @@ class MainServer:
                 self.__printinfo()
             else:
                 print("error choice")
-
