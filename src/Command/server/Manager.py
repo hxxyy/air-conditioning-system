@@ -1,7 +1,10 @@
-from server.Airserver import MainServer
+from Airserver import MainServer
 from threading import Thread
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 4b9c2be9ca5b42f4139e1c6c38d0f57a6642ff2b
 class UseThread(Thread):
     def __init__(self, counter):
         Thread.__init__(self)
