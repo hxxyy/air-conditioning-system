@@ -60,7 +60,7 @@ h1 {
 	  width: 25%;
 	  margin: 3% auto 0;
 	  padding: 25px;
-	  height: 310px;
+	  height: 350px;
 	  border-radius: 3px;
 	-webkit-border-radius: 3px;
 	-moz-border-radius: 3px;
@@ -137,7 +137,7 @@ a.hvr-sweep-to-left {
 input[type="submit"] {
 	  background: #ff5757;
 	  color: #fff;
-  padding: 15px 60px;
+      padding: 15px 60px;
 	  font-size: 1.1em;
 	  font-weight: 600;
 	  margin-right: 27px;

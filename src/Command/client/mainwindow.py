@@ -3,14 +3,13 @@ from json import loads, dumps
 from time import sleep
 
 class Client:
-    def __init__(self, rid='1', realtemp=30.0, ulimit=32, llimit=16, swi=0, nowmoney=0.0, adress='13',
-                 tport=8282, outtemp=30.0):
+    def __init__(self, rid='1', realtemp=30.0, ulimit=32, llimit=16, swi=0, nowmoney=0.0, adress='172.20.10.8',
+                 tport=8080, outtemp=30.0):
         self.roomid = rid
         self.realtimetemperature = realtemp
         self.targettemperature = 26.0
         self.outtemp = outtemp
-
-        self.windVelocity = 0
+        self.windVelocity = 0  # 风速1，2
         self.uplimit = ulimit
         self.lowlimit = llimit
         self.money = nowmoney
@@ -19,7 +18,7 @@ class Client:
         self.switch = swi
 
     def interface(self):
-        print("now temp:", round(self.realtimetemperature,2))
+        print("now temp:", self.realtimetemperature)
         print("target temp", self.targettemperature)
         print("wind", self.windVelocity)
         print("money", self.money)
@@ -33,10 +32,9 @@ class Client:
             print("Error! Too High!")
             return False
         else:
-            self.requestreport()
             self.targettemperature = float(tar)
+            self.requestreport()
             return True
-
 
     def changemodle(self, model):
         self.windVelocity = model
@@ -72,17 +70,14 @@ class Client:
             self.switch = 1
         self.requestreport()
 
-
     def environmentchange(self):
         if self.switch == 0:
-            if self.outtemp >self.realtimetemperature:
-                self.realtimetemperature += 0.05
-            else:
-                self.realtimetemperature -= 0.05
+            self.realtimetemperature += (self.outtemp - self.realtimetemperature) * 0.01
         elif self.targettemperature > self.realtimetemperature:
-            self.realtimetemperature += round(0.05 * self.windVelocity, 2)
+            self.realtimetemperature += round(0.1 * self.windVelocity, 2)
         else:
-            self.realtimetemperature -= round(0.05 * self.windVelocity, 2)
+            self.realtimetemperature -= round(0.1 * self.windVelocity, 2)
+        
 
     def termtask(self):
         while True:
